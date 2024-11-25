@@ -130,7 +130,7 @@ def main(
         if not any([save_maps_, save_glb_, save_ply_]):
             warnings.warn('No output format specified. Please use "--maps", "--glb", or "--ply" to specify the output.')
 
-        save_path = Path(output_path, image_path.relative_to(input_path).parent, image_path.stem)
+        save_path = Path(output_path) # , image_path.relative_to(input_path).parent, image_path.stem)
         save_path.mkdir(exist_ok=True, parents=True)
         if save_maps_:
             save_maps(save_path, points, depth, mask, intrinsics, image)
