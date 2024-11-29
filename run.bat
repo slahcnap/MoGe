@@ -1,0 +1,1 @@
+python infer.py --input D:\3d-reconstruction\datasets\roof4\input\image_42.jpg --output D:\3d-reconstruction\MoGe\output\roof_42 --glb --maps
