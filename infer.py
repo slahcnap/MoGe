@@ -129,8 +129,8 @@ def main(
         points, depth, mask, intrinsics = output['points'].cpu().numpy(), output['depth'].cpu().numpy(), output['mask'].cpu().numpy(), output['intrinsics'].cpu().numpy()
         
         # Write outputs
-        if not any([save_maps_, save_glb_, save_ply_]):
-            warnings.warn('No output format specified. Please use "--maps", "--glb", or "--ply" to specify the output.')
+        # if not any([save_maps_, save_glb_, save_ply_]):
+        #     warnings.warn('No output format specified. Please use "--maps", "--glb", or "--ply" to specify the output.')
 
         save_path = Path(output_path) # , image_path.relative_to(input_path).parent, image_path.stem)
         save_path.mkdir(exist_ok=True, parents=True)
