@@ -1,1 +1,2 @@
-python infer.py --input D:\3d-reconstruction\datasets\roof4\input\image_42.jpg --output D:\3d-reconstruction\MoGe\output\roof_42 --glb --maps
+@REM python infer.py --input D:\3d-reconstruction\datasets\roof4\input\image_42.jpg --output D:\3d-reconstruction\MoGe\output\roof_42 --glb --maps
+python infer.py --input D:\3d-reconstruction\MoGe\output\r01\image.jpg --output D:\3d-reconstruction\MoGe\output\r01 --glb --ply --maps

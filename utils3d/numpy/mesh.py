@@ -46,11 +46,13 @@ def triangulate(
             backslash = np.linalg.norm(vertices[faces[:, 0]] - vertices[faces[:, 2]], axis=-1) < \
                         np.linalg.norm(vertices[faces[:, 1]] - vertices[faces[:, 3]], axis=-1)
     if backslash is None:
+        # print("backslash is None")
         loop_indice = np.stack([
             np.zeros(P - 2, dtype=int),
             np.arange(1, P - 1, 1, dtype=int),
             np.arange(2, P, 1, dtype=int)
         ], axis=1)
+        # print("loop_indice", loop_indice)
         return faces[:, loop_indice].reshape((-1, 3))
     else:
         assert faces.shape[-1] == 4, "now only support quad mesh"

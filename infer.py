@@ -47,6 +47,7 @@ def save_glb(
     vertex_uvs: np.ndarray,
     texture: np.ndarray,
 ):
+    
     trimesh.Trimesh(
         vertices=vertices, 
         faces=faces, 
@@ -68,6 +69,7 @@ def save_ply(
     faces: np.ndarray, 
     vertex_colors: np.ndarray,
 ):
+
     trimesh.Trimesh(
         vertices=vertices, 
         faces=faces, 
@@ -163,6 +165,11 @@ def main(
                 process=False
             ).show()  
 
+        np.save(str(save_path / 'faces.npy'), faces)
+        np.save(str(save_path / 'vertex_uvs.npy'), vertex_uvs)
+        np.save(str(save_path / 'vertices.npy'), vertices)
+        np.save(str(save_path / 'vertex_colors.npy'), vertex_colors)
+    
 
 if __name__ == '__main__':
     main()

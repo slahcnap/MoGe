@@ -379,29 +379,49 @@ def image_mesh(
         *vertex_attrs (np.ndarray): vertex attributes in corresponding order with input image_attrs
         indices (np.ndarray, optional): indices of vertices in the original mesh
     """
+    # print("image_attrs", len(image_attrs))
+    # print("- points", image_attrs[0].shape)
+    # print("- image", image_attrs[1].shape)
+    # print("- image_uv", image_attrs[2].shape)
+
+    # print("mask", mask.shape)
     assert (len(image_attrs) > 0) or (mask is not None), "At least one of image_attrs or mask should be provided"
     height, width = next(image_attrs).shape[:2] if mask is None else mask.shape
     assert all(img.shape[:2] == (height, width) for img in image_attrs), "All image_attrs should have the same shape"
     
     row_faces = np.stack([np.arange(0, width - 1, dtype=np.int32), np.arange(width, 2 * width - 1, dtype=np.int32), np.arange(1 + width, 2 * width, dtype=np.int32), np.arange(1, width, dtype=np.int32)], axis=1)
     faces = (np.arange(0, (height - 1) * width, width, dtype=np.int32)[:, None, None] + row_faces[None, :, :]).reshape((-1, 4))
+    # print("quad faces", faces) # = (H-1) * (W-1)
     if mask is None:
         if tri:
             faces = mesh.triangulate(faces)
         ret = [faces, *(img.reshape(-1, *img.shape[2:]) for img in image_attrs)]
         if return_indices:
             ret.append(np.arange(height * width, dtype=np.int32))
+
+        # print("ret", ret)
         return tuple(ret)
     else:
         quad_mask = (mask[:-1, :-1] & mask[1:, :-1] & mask[1:, 1:] & mask[:-1, 1:]).ravel()
         faces = faces[quad_mask]
         if tri:
             faces = mesh.triangulate(faces)
-        return mesh.remove_unreferenced_vertices(
-            faces, 
-            *(x.reshape(-1, *x.shape[2:]) for x in image_attrs), 
-            return_indices=return_indices
-        )
+        # print("tri faces", faces)
+
+        # ret = mesh.remove_unreferenced_vertices(
+        #     faces, 
+        #     *(x.reshape(-1, *x.shape[2:]) for x in image_attrs), 
+        #     return_indices=return_indices
+        # )
+
+        ret = [faces, *(x.reshape(-1, *x.shape[2:]) for x in image_attrs)]
+
+        # print("ret", len(ret))
+        # print("- faces", ret[0].shape)
+        # print("- vertices", ret[1].shape)
+        # print("- vertex_colors", ret[2].shape)
+        # print("- vertex_uvs", ret[3].shape)
+        return ret
 
 def image_mesh_from_depth(
     depth: np.ndarray,
