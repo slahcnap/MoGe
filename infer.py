@@ -138,18 +138,18 @@ def main(
             save_maps(save_path, points, depth, mask, intrinsics, image)
 
         # Export mesh & visulization
-        if save_glb_ or save_ply_ or show:
-            faces, vertices, vertex_colors, vertex_uvs = utils3d.numpy.image_mesh(
-                points,
-                image.astype(np.float32) / 255,
-                utils3d.numpy.image_uv(width=width, height=height),
-                mask=mask & ~utils3d.numpy.depth_edge(depth, rtol=threshold, mask=mask),
-                tri=True
-            )
-            # When exporting the model, follow the OpenGL coordinate conventions:
-            # - world coordinate system: x right, y up, z backward.
-            # - texture coordinate system: (0, 0) for left-bottom, (1, 1) for right-top.
-            vertices, vertex_uvs = vertices * [1, -1, -1], vertex_uvs * [1, -1] + [0, 1]
+        # if save_glb_ or save_ply_ or show:
+        faces, vertices, vertex_colors, vertex_uvs = utils3d.numpy.image_mesh(
+            points,
+            image.astype(np.float32) / 255,
+            utils3d.numpy.image_uv(width=width, height=height),
+            mask=mask & ~utils3d.numpy.depth_edge(depth, rtol=threshold, mask=mask),
+            tri=True
+        )
+        # When exporting the model, follow the OpenGL coordinate conventions:
+        # - world coordinate system: x right, y up, z backward.
+        # - texture coordinate system: (0, 0) for left-bottom, (1, 1) for right-top.
+        vertices, vertex_uvs = vertices * [1, -1, -1], vertex_uvs * [1, -1] + [0, 1]
 
         if save_glb_:
             save_glb(save_path, vertices, faces, vertex_uvs, image)
