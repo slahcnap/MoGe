@@ -165,11 +165,16 @@ def main(
                 process=False
             ).show()  
 
+        fov_x, fov_y = utils3d.numpy.intrinsics_to_fov(intrinsics)
+        with open(save_path / 'fov.json', 'w') as f:
+            json.dump({
+                'fov_x': round(float(np.rad2deg(fov_x)), 2),
+                'fov_y': round(float(np.rad2deg(fov_y)), 2),
+            }, f)
+
         np.save(str(save_path / 'faces.npy'), faces)
-        np.save(str(save_path / 'vertex_uvs.npy'), vertex_uvs)
         np.save(str(save_path / 'vertices.npy'), vertices)
-        np.save(str(save_path / 'vertex_colors.npy'), vertex_colors)
-    
+
 
 if __name__ == '__main__':
     main()
