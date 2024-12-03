@@ -120,7 +120,7 @@ def depth_edge(depth: np.ndarray, atol: float = None, rtol: float = None, kernel
     if rtol is not None:
         # edge |= diff / depth > rtol
         edge |= np.divide(diff, depth, where=depth != 0, out=np.zeros_like(diff)) > rtol
-        print(edge)
+        # print(edge)
     return edge
 
 

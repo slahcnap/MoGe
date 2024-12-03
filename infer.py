@@ -174,6 +174,8 @@ def main(
 
         np.save(str(save_path / 'faces.npy'), faces)
         np.save(str(save_path / 'vertices.npy'), vertices)
+        np.save(str(save_path / 'vertex_colors.npy'), vertex_colors)
+        np.save(str(save_path / 'vertex_uvs.npy'), vertex_uvs)
 
 
 if __name__ == '__main__':
