@@ -408,22 +408,22 @@ def image_mesh(
         faces = faces[quad_mask]
         if tri:
             faces = mesh.triangulate(faces)
-        # print("tri faces", faces)
 
-        # ret = mesh.remove_unreferenced_vertices(
-        #     faces, 
-        #     *(x.reshape(-1, *x.shape[2:]) for x in image_attrs), 
-        #     return_indices=return_indices
-        # )
+        ret_for_glb = mesh.remove_unreferenced_vertices(
+            faces, 
+            *(x.reshape(-1, *x.shape[2:]) for x in image_attrs), 
+            return_indices=return_indices
+        )
 
-        ret = [faces, *(x.reshape(-1, *x.shape[2:]) for x in image_attrs)]
+        our_ret = [faces, *(x.reshape(-1, *x.shape[2:]) for x in image_attrs)]
 
         # print("ret", len(ret))
         # print("- faces", ret[0].shape)
         # print("- vertices", ret[1].shape)
         # print("- vertex_colors", ret[2].shape)
         # print("- vertex_uvs", ret[3].shape)
-        return ret
+
+        return our_ret, ret_for_glb
 
 def image_mesh_from_depth(
     depth: np.ndarray,

@@ -139,29 +139,42 @@ def main(
 
         # Export mesh & visulization
         # if save_glb_ or save_ply_ or show:
-        faces, vertices, vertex_colors, vertex_uvs = utils3d.numpy.image_mesh(
+        # faces, vertices, vertex_colors, vertex_uvs = utils3d.numpy.image_mesh(
+        #     points,
+        #     image.astype(np.float32) / 255,
+        #     utils3d.numpy.image_uv(width=width, height=height),
+        #     mask=mask & ~utils3d.numpy.depth_edge(depth, rtol=threshold, mask=mask),
+        #     tri=True
+        # )
+
+        our_ret, ret_for_glb = utils3d.numpy.image_mesh(
             points,
             image.astype(np.float32) / 255,
             utils3d.numpy.image_uv(width=width, height=height),
             mask=mask & ~utils3d.numpy.depth_edge(depth, rtol=threshold, mask=mask),
             tri=True
         )
+
         # When exporting the model, follow the OpenGL coordinate conventions:
         # - world coordinate system: x right, y up, z backward.
         # - texture coordinate system: (0, 0) for left-bottom, (1, 1) for right-top.
+        faces, vertices, vertex_colors, vertex_uvs = our_ret
+        faces_glb, vertices_glb, vertex_colors_glb, vertex_uvs_glb = ret_for_glb
+
         vertices, vertex_uvs = vertices * [1, -1, -1], vertex_uvs * [1, -1] + [0, 1]
+        vertices_glb, vertex_uvs_glb = vertices_glb * [1, -1, -1], vertex_uvs_glb * [1, -1] + [0, 1]
 
         if save_glb_:
-            save_glb(save_path, vertices, faces, vertex_uvs, image)
+            save_glb(save_path, vertices_glb, faces_glb, vertex_uvs_glb, image)
 
         if save_ply_:
-            save_ply(save_path, vertices, faces, vertex_colors)
+            save_ply(save_path, vertices_glb, faces_glb, vertex_colors_glb)
 
         if show:
             trimesh.Trimesh(
-                vertices=vertices,
-                vertex_colors=vertex_colors,
-                faces=faces, 
+                vertices=vertices_glb,
+                vertex_colors=vertex_colors_glb,
+                faces=faces_glb, 
                 process=False
             ).show()  
 
