@@ -28,8 +28,8 @@ def save_maps(
     intrinsics: np.ndarray, 
     image: np.ndarray
 ):
-    # cv2.imwrite(str(save_path / 'image.jpg'), cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
-    # cv2.imwrite(str(save_path / 'depth.png'), cv2.cvtColor(colorize_depth(depth), cv2.COLOR_RGB2BGR))
+    cv2.imwrite(str(save_path / 'image.jpg'), cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+    cv2.imwrite(str(save_path / 'depth.png'), cv2.cvtColor(colorize_depth(depth), cv2.COLOR_RGB2BGR))
     # cv2.imwrite(str(save_path / 'depth.exr'), depth, [cv2.IMWRITE_EXR_TYPE, cv2.IMWRITE_EXR_TYPE_FLOAT])
     # cv2.imwrite(str(save_path / 'mask.png'), (mask * 255).astype(np.uint8))
     # cv2.imwrite(str(save_path / 'points.exr'), cv2.cvtColor(points, cv2.COLOR_RGB2BGR), [cv2.IMWRITE_EXR_TYPE, cv2.IMWRITE_EXR_TYPE_FLOAT])
@@ -136,6 +136,9 @@ def main(
         save_path.mkdir(exist_ok=True, parents=True)
         if save_maps_:
             save_maps(save_path, points, depth, mask, intrinsics, image)
+
+        points
+        np.save(rf"{save_path}\points.npy", points)
 
         # Export mesh & visulization
         # if save_glb_ or save_ply_ or show:
