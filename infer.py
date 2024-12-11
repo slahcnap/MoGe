@@ -90,6 +90,7 @@ def save_ply(
 @click.option('--glb', 'save_glb_', is_flag=True, help='Whether to save the output as a.glb file. The color will be saved as a texture.')
 @click.option('--ply', 'save_ply_', is_flag=True, help='Whether to save the output as a.ply file. The color will be saved as vertex colors.')
 @click.option('--show', 'show', is_flag=True, help='Whether show the output in a window. Note that this requires pyglet<2 installed as required by trimesh.')
+
 def main(
     input_path: str,
     output_path: str,
@@ -117,6 +118,7 @@ def main(
     model = MoGeModel.from_pretrained(pretrained_model_name_or_path).to(device).eval()
 
     for image_path in (pbar := tqdm(image_paths, desc='Inference', disable=len(image_paths) <= 1)):
+
         image = cv2.cvtColor(cv2.imread(str(image_path)), cv2.COLOR_BGR2RGB)
         height, width = image.shape[:2]
         if resize_to is not None:
@@ -132,12 +134,14 @@ def main(
         # if not any([save_maps_, save_glb_, save_ply_]):
         #     warnings.warn('No output format specified. Please use "--maps", "--glb", or "--ply" to specify the output.')
 
-        save_path = Path(output_path) # , image_path.relative_to(input_path).parent, image_path.stem)
+        save_folder = str(image_path.name.split("_")[0])
+        save_path = Path(f"{output_path}/{save_folder}")# Path(output_path) # , image_path.relative_to(input_path).parent, image_path.stem)
         save_path.mkdir(exist_ok=True, parents=True)
+
+        
         if save_maps_:
             save_maps(save_path, points, depth, mask, intrinsics, image)
 
-        points
         np.save(rf"{save_path}\points.npy", points)
 
         # Export mesh & visulization

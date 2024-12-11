@@ -424,3 +424,6 @@ FodyWeavers.xsd
 /pretrained
 /.gradio
 /output
+
+dataset/
+output/
